@@ -1,0 +1,26 @@
+{
+  "api": {
+    "port": 54321,
+    "schemas": ["public", "auth", "storage", "graphql_public"],
+    "max_rows": 1000
+  },
+  "db": {
+    "port": 54322,
+    "major_version": 15
+  },
+  "studio": {
+    "port": 54323
+  },
+  "inbucket": {
+    "port": 54324
+  },
+  "vector": {
+    "port": 54325
+  },
+  "realtime": {
+    "max_concurrent_connections": 1000,
+    "max_events_per_second": 2000,
+    "max_channels_per_client": 10,
+    "max_joins_per_second": 500
+  }
+}
