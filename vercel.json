@@ -1,0 +1,40 @@
+# Vercel deployment configuration (for frontend only)
+{
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "public",
+  "installCommand": "npm install",
+  "env": [
+    "REACT_APP_API_URL",
+    "REACT_APP_SUPABASE_URL",
+    "REACT_APP_SUPABASE_ANON_KEY"
+  ],
+  "headers": [
+    {
+      "source": "/api/:path*",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Credentials",
+          "value": "true"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "${{ env.REACT_APP_API_URL }}/api/:path*"
+    }
+  ]
+}
