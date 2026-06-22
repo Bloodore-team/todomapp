@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr" class="antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Connexion — Todom</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div class="min-h-screen flex items-center justify-center">
+      <form action="" method="post" class="bg-white dark:bg-gray-800 p-6 rounded shadow w-96">
+        <h1 class="text-xl font-bold mb-4">Connexion</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div>
+              {% for category, msg in messages %}
+                <div class="text-sm text-red-500">{{ msg }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        <input name="username" placeholder="Nom d'utilisateur" class="w-full p-2 mb-2 rounded bg-gray-50 dark:bg-gray-700" />
+        <input type="password" name="password" placeholder="Mot de passe" class="w-full p-2 mb-2 rounded bg-gray-50 dark:bg-gray-700" />
+        <div class="flex justify-end space-x-2 mt-3">
+          <a href="/auth/register" class="px-3 py-1 border rounded">S'inscrire</a>
+          <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded">Connexion</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

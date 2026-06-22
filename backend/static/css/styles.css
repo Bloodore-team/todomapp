@@ -1,0 +1,6 @@
+/* custom styles for Todom */
+:root{
+  --accent: #2563eb;
+}
+
+/* simple dark toggle handled by script */

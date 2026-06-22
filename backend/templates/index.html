@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr" class="antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Todom — Notion-like Todo</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div id="app" class="min-h-screen flex">
+      <!-- Sidebar -->
+      <aside class="w-64 bg-white dark:bg-gray-800 border-r dark:border-gray-700 h-screen fixed">
+        <div class="p-4 border-b dark:border-gray-700">
+          <h1 class="text-xl font-semibold">Todom</h1>
+        </div>
+        <nav class="p-4 space-y-2">
+          <button data-nav="home" class="nav-btn w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">Home</button>
+          <button data-nav="inbox" class="nav-btn w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">Inbox</button>
+          <button data-nav="favorites" class="nav-btn w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">Favoris</button>
+          <a href="/settings" class="block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
+        </nav>
+        <div class="p-4 border-t dark:border-gray-700">
+          <h2 class="text-xs uppercase text-gray-500">Projects</h2>
+          <ul id="project-list" class="mt-2 space-y-1"></ul>
+          <div class="mt-3">
+            <input id="new-project-name" class="w-full px-2 py-1 rounded bg-gray-50 dark:bg-gray-700" placeholder="Nouveau projet" />
+            <button id="create-project" class="mt-2 w-full bg-blue-600 text-white px-2 py-1 rounded">Créer</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="flex-1 ml-64 p-6">
+        <header class="flex items-center justify-between mb-6">
+          <div class="flex items-center space-x-3">
+            <button id="toggle-dark" class="px-3 py-1 border rounded">Dark</button>
+            <input id="search" placeholder="Rechercher..." class="px-3 py-1 border rounded" />
+          </div>
+          <div class="flex items-center space-x-2">
+            <button id="show-dashboard" class="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded">Dashboard</button>
+            <button id="show-calendar" class="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded">Calendrier</button>
+            <button id="new-task-btn" class="px-3 py-1 bg-blue-600 text-white rounded">Nouvelle tâche</button>
+            {% if current_user.is_authenticated %}
+              <span class="px-3 py-1">Bonjour, {{ current_user.username }}</span>
+              <a href="/auth/logout" class="px-3 py-1 border rounded">Logout</a>
+            {% else %}
+              <a href="/auth/login" class="px-3 py-1 border rounded">Login</a>
+              <a href="/auth/register" class="px-3 py-1 border rounded">Register</a>
+            {% endif %}
+          </div>
+        </header>
+
+        <section id="dashboard" class="mb-6">
+          <div class="grid grid-cols-3 gap-4">
+            <div class="p-4 bg-white dark:bg-gray-800 rounded shadow">
+              <div class="text-sm text-gray-500">Faites</div>
+              <div id="stat-done" class="text-2xl font-bold">0</div>
+            </div>
+            <div class="p-4 bg-white dark:bg-gray-800 rounded shadow">
+              <div class="text-sm text-gray-500">En cours</div>
+              <div id="stat-en_cours" class="text-2xl font-bold">0</div>
+            </div>
+            <div class="p-4 bg-white dark:bg-gray-800 rounded shadow">
+              <div class="text-sm text-gray-500">Restantes</div>
+              <div id="stat-todo" class="text-2xl font-bold">0</div>
+            </div>
+          </div>
+          <div class="mt-4 p-4 bg-white dark:bg-gray-800 rounded shadow">
+            <canvas id="activityChart" height="100"></canvas>
+          </div>
+        </section>
+
+        <section id="tasks-area">
+          <div id="tasks" class="grid grid-cols-3 gap-4"></div>
+        </section>
+      </main>
+
+      <!-- Modals / floating forms -->
+      <div id="task-modal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-40">
+        <div class="bg-white dark:bg-gray-800 p-4 rounded w-96">
+          <h3 class="font-semibold mb-2">Tâche</h3>
+          <input id="task-title" class="w-full p-2 mb-2 rounded bg-gray-50 dark:bg-gray-700" placeholder="Titre" />
+          <textarea id="task-desc" class="w-full p-2 mb-2 rounded bg-gray-50 dark:bg-gray-700" placeholder="Description"></textarea>
+          <div class="flex space-x-2">
+            <select id="task-project" class="flex-1 p-2 rounded bg-gray-50 dark:bg-gray-700"></select>
+            <select id="task-status" class="w-36 p-2 rounded bg-gray-50 dark:bg-gray-700">
+              <option value="todo">Todo</option>
+              <option value="en_cours">En cours</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+          <div class="mt-3 flex justify-end space-x-2">
+            <button id="save-task" class="px-3 py-1 bg-blue-600 text-white rounded">Save</button>
+            <button id="cancel-task" class="px-3 py-1 border rounded">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <script src="/static/js/app.js"></script>
+    </div>
+  </body>
+</html>
